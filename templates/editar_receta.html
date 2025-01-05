@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Receta</title>
+    <!-- Estilos CSS -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fa;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="number"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 150px;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        button:active {
+            transform: translateY(2px);
+        }
+
+        .ingrediente {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Botón Volver a la Gestión de Recetas -->
+        <a href="{{ url_for('gestion_recetas') }}">
+            <button type="button" style="width: auto; margin-bottom: 20px;">Volver a Gestión de Recetas</button>
+        </a>
+
+        <h1>Editar Receta</h1>
+        
+        <form action="{{ url_for('editar_receta', id_receta=receta['id_receta']) }}" method="POST">
+            <!-- Nombre de la receta -->
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" value="{{ receta['nombre'] }}" required><br>
+            
+            <!-- Instrucciones de la receta -->
+            <label for="instrucciones">Instrucciones:</label>
+            <textarea id="instrucciones" name="instrucciones" required>{{ receta['instrucciones'] }}</textarea><br>
+
+            <!-- Ingredientes -->
+            <div id="ingredientes">
+                <h3>Ingredientes</h3>
+                {% for ingrediente in ingredientes %}
+                <div class="ingrediente">
+                    <label>Ingrediente:</label>
+                    <input type="text" name="ingrediente[]" value="{{ ingrediente['nombre'] }}" required>
+
+                    <label>Cantidad:</label>
+                    <input type="number" name="cantidad[]" value="{{ ingrediente['cantidad'] }}" step="any" required>
+
+                    <label>Unidad:</label>
+                    <input type="text" name="unidad[]" value="{{ ingrediente['unidad'] }}" required><br>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Botón para agregar otro ingrediente -->
+            <button type="button" id="agregar_ingrediente">Agregar otro ingrediente</button><br><br>
+
+            <!-- Botón para guardar los cambios -->
+            <button type="submit">Guardar Cambios</button>
+        </form>
+    </div>
+
+    <script>
+        let contador = {{ ingredientes|length + 1 }}; // Para numerar los ingredientes
+        document.getElementById('agregar_ingrediente').addEventListener('click', function() {
+            let nuevoIngrediente = document.createElement('div');
+            nuevoIngrediente.classList.add('ingrediente');
+            nuevoIngrediente.innerHTML = `
+                <label>Ingrediente:</label>
+                <input type="text" name="ingrediente[]" required>
+
+                <label>Cantidad:</label>
+                <input type="number" name="cantidad[]" step="any" required>
+
+                <label>Unidad:</label>
+                <input type="text" name="unidad[]" required><br>
+            `;
+            document.getElementById('ingredientes').appendChild(nuevoIngrediente);
+            contador++;
+        });
+    </script>
+</body>
+</html>

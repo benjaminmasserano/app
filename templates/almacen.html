@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Almacén - Bastarda Gestión</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7fa;
+            color: #333;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-3px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+
+        td {
+            background-color: #ecf0f1;
+        }
+
+        select, input[type="number"], input[type="password"] {
+            padding: 8px;
+            margin: 10px 0;
+            width: 100%;
+            max-width: 300px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+        }
+
+        form h2 {
+            margin-top: 0;
+        }
+
+        hr {
+            border: 0;
+            border-top: 1px solid #ccc;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .back-button a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Gestión de Almacén</h1>
+    </header>
+
+    <div class="container">
+        <!-- Botón para volver a la página principal -->
+        <div class="back-button">
+            <a href="{{ url_for('index') }}">
+                <button class="btn" type="button">Volver a Inicio</button>
+            </a>
+        </div>
+
+        <!-- Botón para ver el historial de movimientos -->
+        <div class="back-button">
+            <a href="{{ url_for('historial_movimientos') }}">
+                <button class="btn" type="button">Ver Historial de Movimientos</button>
+            </a>
+        </div>
+
+        <hr>
+
+        <!-- Mostrar inventario -->
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Detalle</th>
+                    <th>Cantidad</th>
+                    <th>Unidad</th>
+                    <th>Último Movimiento</th>
+                    <th>Tipo Movimiento</th>
+                    <th>Editar Cantidad</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in almacen %}
+                <tr>
+                    <td>{{ item.id_mercaderia }}</td>
+                    <td>{{ item.nombre }}</td>
+                    <td>{{ item.detalle }}</td>
+                    <td>{{ item.cantidad }}</td>
+                    <td>{{ item.unidad }}</td>
+                    <td>{{ item.ultimo_movimiento }}</td>
+                    <td>{{ item.tipo_movimiento }}</td>
+                    <td>
+                        <a href="{{ url_for('edit_almacen', id=item.id_mercaderia) }}">
+                            <button class="btn" type="button">Editar</button>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <hr>
+
+        <!-- Formulario para entrada de mercaderías -->
+        <h2>Registrar Entrada de Mercaderías</h2>
+        <form method="POST" action="{{ url_for('almacen') }}">
+            <input type="hidden" name="accion" value="entrada">
+            <label for="persona">Persona:</label>
+            <select name="persona" required>
+                {% for persona in personas %}
+                <option value="{{ persona.id_persona }}">{{ persona.nombre }} {{ persona.apellido }}</option>
+                {% endfor %}
+            </select><br>
+
+            <label for="clave_fichaje">Clave de Fichaje:</label>
+            <input type="password" name="clave_fichaje" required><br>
+
+            <label for="id_mercaderia_entrada">Mercadería:</label>
+            <select name="id_mercaderia_entrada" required>
+                {% for mercaderia in mercaderias %}
+                <option value="{{ mercaderia.id_mercaderia }}">{{ mercaderia.nombre }}</option>
+                {% endfor %}
+            </select><br>
+
+            <label for="cantidad_entrada">Cantidad:</label>
+            <input type="number" name="cantidad_entrada" min="1" required><br>
+
+            <button class="btn" type="submit">Registrar Entrada</button>
+        </form>
+
+        <hr>
+
+        <!-- Formulario para salida de mercaderías -->
+        <h2>Registrar Salida de Mercaderías</h2>
+        <form method="POST" action="{{ url_for('almacen') }}">
+            <input type="hidden" name="accion" value="salida">
+            <label for="persona">Persona:</label>
+            <select name="persona" required>
+                {% for persona in personas %}
+                <option value="{{ persona.id_persona }}">{{ persona.nombre }} {{ persona.apellido }}</option>
+                {% endfor %}
+            </select><br>
+
+            <label for="clave_fichaje">Clave de Fichaje:</label>
+            <input type="password" name="clave_fichaje" required><br>
+
+            <label for="id_mercaderia_salida">Mercadería:</label>
+            <select name="id_mercaderia_salida" required>
+                {% for mercaderia in mercaderias_en_almacen %}
+                <option value="{{ mercaderia.id_mercaderia }}">{{ mercaderia.nombre }}</option>
+                {% endfor %}
+            </select><br>
+
+            <label for="cantidad_salida">Cantidad:</label>
+            <input type="number" name="cantidad_salida" min="1" required><br>
+
+            <button class="btn" type="submit">Registrar Salida</button>
+        </form>
+    </div>
+
+</body>
+</html>

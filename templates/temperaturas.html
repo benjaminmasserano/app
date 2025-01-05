@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Temperaturas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 10px 0;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        td {
+            background-color: #fff;
+        }
+
+        input[type="number"] {
+            padding: 5px;
+            font-size: 16px;
+            width: 150px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Botón para volver a la página de heladeras -->
+    <a href="{{ url_for('heladeras') }}">
+        <button type="button">Volver a Heladeras</button>
+    </a>
+
+    <h1>Registro de Temperaturas para {{ heladera.nombre }}</h1>
+    <h2>Temperatura Objetivo: {{ heladera.temperatura_objetivo }}°C</h2>
+
+    <!-- Formulario para registrar la temperatura medida -->
+    <form action="" method="post">
+        <label for="temperatura_medida">Temperatura Medida:</label>
+        <input type="number" id="temperatura_medida" name="temperatura_medida" step="0.1" required>
+        <button type="submit">Registrar</button>
+    </form>
+
+    <h2>Historial de Temperaturas</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha y Hora</th>
+                <th>Temperatura Medida</th>
+                <th>Temperatura Objetivo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for temp in temperaturas %}
+            <tr>
+                <td>{{ temp.fecha_hora }}</td>
+                <td>{{ temp.temperatura_medida }}°C</td>
+                <td>{{ temp.temperatura_objetivo }}°C</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

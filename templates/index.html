@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio - Bastarda Gestión</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7fa;
+            color: #333;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        /* Estilos del contenedor */
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Estilos del menú */
+        ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        li {
+            margin: 10px;
+        }
+
+        a {
+            display: block;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 16px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 5px;
+            text-align: center;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        a:hover {
+            background-color: #2980b9;
+            transform: translateY(-3px);
+        }
+
+        a:active {
+            transform: translateY(0);
+        }
+
+        /* Estilos de la cabecera */
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 40px 0;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            ul {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Estilo del botón de cerrar sesión */
+        .logout-btn {
+            background-color: #e74c3c;
+        }
+
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>BIENVENIDOS A BASTARDA GESTIÓN</h1>
+    </header>
+
+    <div class="container">
+        <h2>Menú</h2>
+        <ul>
+            <li><a href="{{ url_for('personas') }}">Gestión de Personas</a></li>
+            <li><a href="{{ url_for('proveedores') }}">Gestión de Proveedores</a></li>
+            <li><a href="{{ url_for('mercaderias') }}">Gestión de Mercaderías</a></li>
+            <li><a href="{{ url_for('almacen') }}">Gestión de Almacén</a></li>
+            <li><a href="{{ url_for('gestion_fichaje') }}">Gestión de Fichaje</a></li>
+            <li><a href="{{ url_for('gestion_recetas') }}">Gestión de Recetas</a></li>
+            <li><a href="{{ url_for('heladeras') }}">Gestión de Heladeras</a></li>
+            <li><a href="{{ url_for('gestion_pedidos') }}">Gestión de Pedidos</a></li>
+        </ul>
+        <!-- Botón de Cerrar Sesión -->
+        <a href="{{ url_for('logout') }}" class="logout-btn">Cerrar sesión</a>
+    </div>
+</body>
+</html>

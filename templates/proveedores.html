@@ -1,0 +1,128 @@
+{% block content %}
+<!-- Botón para volver al inicio -->
+<a href="{{ url_for('index') }}">
+    <button type="button">Volver a Inicio</button>
+</a>
+
+<h1>Proveedores</h1>
+
+<!-- Botón para añadir nuevo proveedor -->
+<a href="{{ url_for('add_proveedor') }}">
+    <button type="button">Añadir Nuevo Proveedor</button>
+</a>
+
+<!-- Filtro por Localidad -->
+<p></p>
+<label for="filtro-localidad">Filtrar por Localidad:</label>
+<select id="filtro-localidad" style="padding: 5px; margin: 10px 0;">
+    <option value="">Todas las Localidades</option>
+    {% for localidad in localidades %}
+        <option value="{{ localidad }}">{{ localidad }}</option>
+    {% endfor %}
+</select>
+<p></p>
+
+<!-- Tabla de proveedores -->
+<table id="proveedores-table" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+    <thead>
+        <tr>
+            <th style="padding: 10px; text-align: left; background-color: #f2f2f2;">ID Proveedor</th>
+            <th style="padding: 10px; text-align: left; background-color: #f2f2f2;">Nombre</th>
+            <th style="padding: 10px; text-align: left; background-color: #f2f2f2;">Email</th>
+            <th style="padding: 10px; text-align: left; background-color: #f2f2f2;">Teléfono</th>
+            <th style="padding: 10px; text-align: left; background-color: #f2f2f2;">Localidad</th>
+            <th style="padding: 10px; text-align: left; background-color: #f2f2f2;">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for proveedor in proveedores %}
+        <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ proveedor.id_proveedor }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ proveedor.nombre }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ proveedor.mail }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ proveedor.telefono }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ proveedor.localidad }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">
+                <a href="{{ url_for('edit_proveedor', id=proveedor.id_proveedor) }}" style="text-decoration: none; color: blue;">Editar</a> | 
+                <a href="{{ url_for('delete_proveedor', id=proveedor.id_proveedor) }}" style="text-decoration: none; color: red;">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+// Filtrar tabla por localidad
+document.getElementById('filtro-localidad').addEventListener('change', function() {
+    var selectedLocalidad = this.value.toLowerCase();
+    var rows = document.getElementById('proveedores-table').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+    for (var i = 0; i < rows.length; i++) {
+        var localidad = rows[i].getElementsByTagName('td')[4].textContent.toLowerCase();
+        if (selectedLocalidad === "" || localidad === selectedLocalidad) {
+            rows[i].style.display = '';
+        } else {
+            rows[i].style.display = 'none';
+        }
+    }
+});
+</script>
+
+{% endblock %}
+
+<style>
+    /* Estilo para los botones */
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin: 5px;
+    }
+
+    button:hover {
+        background-color: #2980b9;
+    }
+
+    button:active {
+        transform: translateY(2px);
+    }
+
+    /* Estilo para los enlaces de la tabla */
+    a {
+        font-size: 14px;
+    }
+
+    /* Estilo para la tabla */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    td {
+        background-color: #fff;
+    }
+
+    td a {
+        color: blue;
+        text-decoration: none;
+    }
+
+    td a:hover {
+        text-decoration: underline;
+    }
+</style>

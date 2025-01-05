@@ -1,0 +1,110 @@
+{% block content %}
+<a href="{{ url_for('index') }}">
+    <button type="button" class="boton-volver">Volver a Inicio</button>
+</a>
+
+<h1>Gestión de Heladeras</h1>
+
+<a href="{{ url_for('add_heladera') }}">
+    <button type="button" class="boton-agregar">Agregar Heladera</button>
+</a>
+<p></p>
+
+<table class="tabla-heladeras">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Temperatura Objetivo</th>
+            <th>Fecha y Hora Última Medición</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for heladera in heladeras %}
+        <tr>
+            <td>{{ heladera.id_heladera }}</td>
+            <td>{{ heladera.nombre }}</td>
+            <td>{{ heladera.temperatura_objetivo }}</td>
+            <td>{{ heladera.fecha_ultima_medicion }}</td>
+            <td>
+                <form action="{{ url_for('temperaturas', id_heladera=heladera.id_heladera) }}" method="get" style="display:inline;">
+                    <button type="submit" class="boton-accion">Tomar Temperatura</button>
+                </form>
+                <form action="{{ url_for('edit_heladera', id=heladera.id_heladera) }}" method="get" style="display:inline;">
+                    <button type="submit" class="boton-accion">Editar</button>
+                </form>
+                <form action="{{ url_for('delete_heladera', id=heladera.id_heladera) }}" method="post" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta heladera?');">
+                    <button type="submit" class="boton-accion">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+<style>
+    /* Estilo general para los botones */
+    .boton-volver, .boton-agregar, .boton-accion {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin: 10px;
+    }
+
+    .boton-volver:hover, .boton-agregar:hover, .boton-accion:hover {
+        background-color: #2980b9;
+    }
+
+    .boton-volver:active, .boton-agregar:active, .boton-accion:active {
+        transform: translateY(2px);
+    }
+
+    /* Estilo para la tabla */
+    .tabla-heladeras {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .tabla-heladeras th, .tabla-heladeras td {
+        text-align: center;
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+
+    .tabla-heladeras th {
+        background-color: #f2f2f2;
+    }
+
+    .tabla-heladeras td {
+        background-color: #fff;
+    }
+
+    /* Estilo para los botones de acción */
+    .boton-accion {
+        background-color: #2ecc71;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 8px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin: 5px;
+    }
+
+    .boton-accion:hover {
+        background-color: #27ae60;
+    }
+
+    .boton-accion:active {
+        transform: translateY(2px);
+    }
+</style>

@@ -1,0 +1,37 @@
+{% block content %}
+<a href="{{ url_for('almacen') }}">
+    <button type="button" style="background-color: #3498db; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer;">
+        Volver a Almacén
+    </button>
+</a>
+
+<h2 style="text-align: center; font-weight: bold;">Historial de Movimientos</h2>
+
+{% if movimientos %}
+<!-- Tabla con mejor diseño -->
+<table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+    <thead style="background-color: #f2f2f2;">
+        <tr>
+            <th style="text-align: left; padding: 10px; font-weight: bold;">Nombre de Mercadería</th>
+            <th style="text-align: left; padding: 10px; font-weight: bold;">Cantidad</th>
+            <th style="text-align: left; padding: 10px; font-weight: bold;">Tipo de Movimiento</th>
+            <th style="text-align: left; padding: 10px; font-weight: bold;">Fecha del Movimiento</th>
+            <th style="text-align: left; padding: 10px; font-weight: bold;">Registrado por</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for movimiento in movimientos %}
+        <tr>
+            <td style="padding: 10px; text-align: left;">{{ movimiento[0] }}</td> <!-- 'mercaderia' -->
+            <td style="padding: 10px; text-align: left;">{{ movimiento[1] }}</td> <!-- 'cantidad' -->
+            <td style="padding: 10px; text-align: left;">{{ movimiento[2] }}</td> <!-- 'tipo_movimiento' -->
+            <td style="padding: 10px; text-align: left;">{{ movimiento[3] }}</td> <!-- 'fecha_hora' -->
+            <td style="padding: 10px; text-align: left;">{{ movimiento[4] }}</td> <!-- 'persona' -->
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+    <p>No se encontraron movimientos.</p>
+{% endif %}
+{% endblock %}

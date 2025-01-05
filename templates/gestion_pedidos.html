@@ -1,0 +1,117 @@
+{% block content %}
+<a href="{{ url_for('index') }}">
+    <button type="button" class="boton-volver">Volver a Inicio</button>
+</a>
+
+<h1>Gestión de Pedidos</h1>
+
+<!-- Botón para acceder al historial de pedidos -->
+<a href="{{ url_for('historial_pedidos') }}">
+    <button type="button" class="boton-historial">Historial de Pedidos</button>
+</a>
+<p></p>
+
+<form method="POST">
+    <!-- Sección para ingresar la persona que genera el pedido y su clave de fichaje -->
+    <h2>Generar Pedido</h2>
+    <table border="1" cellpadding="10" cellspacing="0" class="tabla-pedido">
+        <thead>
+            <tr>
+                <th>Persona que Genera el Pedido</th>
+                <th>Clave de Fichaje</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <select name="persona" required>
+                        {% for persona in personas %}
+                        <option value="{{ persona.id_persona }}">{{ persona.nombre }} {{ persona.apellido }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td><input type="password" name="clave_fichaje" required></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Detalles del Pedido</h2>
+    <table border="1" cellpadding="10" cellspacing="0" class="tabla-pedido">
+        <thead>
+            <tr>
+                <th>Mercadería</th>
+                <th>Unidad</th>
+                <th>Proveedor</th>
+                <th>Cantidad a Pedir</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in mercaderias_con_proveedores %}
+            <tr>
+                <td>{{ item.mercaderia.nombre }}</td>
+                <td>{{ item.mercaderia.unidad }}</td>
+                <td>
+                    <select name="proveedor_{{ item.mercaderia.id_mercaderia }}">
+                        {% for proveedor in item.proveedores %}
+                        <option value="{{ proveedor.id_proveedor }}">
+                            {{ proveedor.nombre }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td>
+                    <input type="number" name="cantidad_{{ item.mercaderia.id_mercaderia }}" value="0" min="0">
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <button type="submit" class="boton-submit">Generar Pedido</button>
+</form>
+
+{% endblock %}
+
+<style>
+    /* Estilo para los botones */
+    .boton-volver, .boton-historial, .boton-submit {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin: 10px;
+    }
+
+    .boton-volver:hover, .boton-historial:hover, .boton-submit:hover {
+        background-color: #2980b9;
+    }
+
+    .boton-volver:active, .boton-historial:active, .boton-submit:active {
+        transform: translateY(2px);
+    }
+
+    /* Estilo para las tablas */
+    .tabla-pedido {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .tabla-pedido th, .tabla-pedido td {
+        text-align: center;
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+
+    .tabla-pedido th {
+        background-color: #f2f2f2;
+    }
+
+    .tabla-pedido input[type="number"] {
+        width: 60px;
+        text-align: center;
+    }
+</style>

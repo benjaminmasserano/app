@@ -1,0 +1,125 @@
+{% block content %}
+<div class="container">
+    <!-- Botón Volver al Almacén -->
+    <div class="back-button">
+        <a href="{{ url_for('almacen') }}">
+            <button class="btn" type="button">Volver al Almacén</button>
+        </a>
+    </div>
+
+    <h1>Editar Mercadería</h1>
+
+    <form method="POST" class="form-edit">
+        <label for="nombre">Nombre:</label>
+        <input type="text" name="nombre" value="{{ mercaderia['nombre'] }}" readonly><br> <!-- Acceso usando clave 'nombre' -->
+    
+        <label for="detalle">Detalle:</label>
+        <input type="text" name="detalle" value="{{ mercaderia['detalle'] }}" readonly><br> <!-- Acceso usando clave 'detalle' -->
+    
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" name="cantidad" value="{{ mercaderia['cantidad'] }}" required><br> <!-- Acceso usando clave 'cantidad' -->
+    
+        <!-- Lista desplegable de personas -->
+        <label for="persona">Persona:</label>
+        <select name="persona" required>
+            {% for persona in personas %}
+                <option value="{{ persona.id_persona }}" 
+                    {% if persona.id_persona == mercaderia['id_persona'] %}selected{% endif %}> <!-- Acceso usando clave 'id_persona' -->
+                    {{ persona.nombre }} {{ persona.apellido }}
+                </option>
+            {% endfor %}
+        </select><br>
+    
+        <!-- Campo de clave de fichaje -->
+        <label for="clave_fichaje">Clave de Fichaje:</label>
+        <input type="password" name="clave_fichaje" required><br>
+    
+        <button type="submit" class="btn-primary">Actualizar Cantidad</button>
+    </form>
+    
+</div>
+
+<!-- Estilos CSS -->
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f7fa;
+        margin: 0;
+        padding: 0;
+        color: #333;
+    }
+
+    .container {
+        width: 80%;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    h1 {
+        text-align: center;
+        color: #2c3e50;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        text-decoration: none;
+    }
+
+    .btn:hover {
+        background-color: #2980b9;
+        transform: translateY(-3px);
+    }
+
+    .btn:active {
+        transform: translateY(0);
+    }
+
+    .btn-primary {
+        background-color: #27ae60;
+    }
+
+    .btn-primary:hover {
+        background-color: #2ecc71;
+    }
+
+    .form-edit {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-edit label {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+    }
+
+    .form-edit input, .form-edit select {
+        width: 100%;
+        padding: 10px;
+        margin-top: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+    .form-edit input[readonly] {
+        background-color: #f9f9f9;
+    }
+
+    .back-button {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+</style>
+
+{% endblock %}

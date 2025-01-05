@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Fichaje</title>
+    <style>
+        .teclado {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Divide en 3 columnas de igual tamaño */
+            gap: 15px; /* Aumentamos el espacio entre botones */
+            max-width: 250px;
+            margin: 20px auto;
+            justify-items: center; /* Centra el contenido dentro de cada celda */
+            align-items: center; /* Centra el contenido verticalmente */
+        }
+
+        .teclado button {
+            font-size: 22px;
+            padding: 15px;
+            cursor: pointer;
+            width: 100%; /* Esto asegura que los botones ocupen todo el espacio disponible en la celda */
+            height: 100%; /* Esto asegura que los botones se adapten al tamaño de la celda */
+            box-sizing: border-box; /* Asegura que el padding no afecte el tamaño del botón */
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .teclado button:hover {
+            background-color: #2980b9;
+        }
+
+        .teclado button:active {
+            transform: translateY(2px);
+        }
+
+        .fichaje-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .fichaje-container label {
+            margin-right: 10px;
+        }
+
+        .fichaje-container input {
+            width: 100px;
+            font-size: 18px;
+            padding: 5px;
+            text-align: center;
+        }
+
+        .hora-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            width: 200px;
+            text-align: center;
+            background-color: white;
+        }
+
+        .boton-accion {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .boton-accion button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .boton-accion button:hover {
+            background-color: #27ae60;
+        }
+
+        .boton-accion button:active {
+            transform: translateY(2px);
+        }
+
+        .historial-button {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .historial-button button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #f39c12;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .historial-button button:hover {
+            background-color: #e67e22;
+        }
+
+        .historial-button button:active {
+            transform: translateY(2px);
+        }
+
+        .volver-button {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .volver-button button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .volver-button button:hover {
+            background-color: #c0392b;
+        }
+
+        .volver-button button:active {
+            transform: translateY(2px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Botón para volver al inicio -->
+    <div class="volver-button">
+        <a href="{{ url_for('index') }}">
+            <button type="button">Volver a Inicio</button>
+        </a>
+    </div>
+
+    <form method="POST">
+        <div class="hora-container">
+            <p><strong>Hora Actual:</strong> <span id="hora_actual">{{ current_time }}</span></p>
+        </div>
+
+        <div class="fichaje-container">
+            <label for="clave_fichaje">Ingrese su clave de fichaje (4 dígitos):</label>
+            <input type="text" id="clave_fichaje" name="clave_fichaje" maxlength="4" required aria-label="Clave de fichaje (4 dígitos)">
+        </div>
+
+        <div class="boton-accion">
+            <button type="submit" name="accion" value="inicio_turno">Registrar Inicio Turno</button>
+            <button type="submit" name="accion" value="fin_turno">Registrar Fin Turno</button>
+        </div>
+
+        <div class="teclado">
+            <button type="button" onclick="agregarNumero('1')">1</button>
+            <button type="button" onclick="agregarNumero('2')">2</button>
+            <button type="button" onclick="agregarNumero('3')">3</button>
+            <button type="button" onclick="agregarNumero('4')">4</button>
+            <button type="button" onclick="agregarNumero('5')">5</button>
+            <button type="button" onclick="agregarNumero('6')">6</button>
+            <button type="button" onclick="agregarNumero('7')">7</button>
+            <button type="button" onclick="agregarNumero('8')">8</button>
+            <button type="button" onclick="agregarNumero('9')">9</button>
+            <button type="button" onclick="agregarNumero('0')">0</button>
+            <button type="button" onclick="borrarNumero()">Borrar</button>
+        </div>
+
+        <br>
+
+        <!-- Botón para ver historial de fichajes -->
+        <div class="historial-button">
+            <a href="{{ url_for('historial_fichajes') }}">
+                <button type="button">Ver Historial de Fichajes</button>
+            </a>
+        </div>
+    </form>
+
+    <script>
+        function agregarNumero(numero) {
+            var claveFichaje = document.getElementById('clave_fichaje');
+            if (claveFichaje.value.length < 4) {
+                claveFichaje.value += numero;
+            }
+        }
+
+        function borrarNumero() {
+            var claveFichaje = document.getElementById('clave_fichaje');
+            claveFichaje.value = claveFichaje.value.slice(0, -1);
+        }
+
+        function actualizarHora() {
+            var fecha = new Date();
+            var horas = fecha.getHours().toString().padStart(2, '0');
+            var minutos = fecha.getMinutes().toString().padStart(2, '0');
+            var segundos = fecha.getSeconds().toString().padStart(2, '0');
+            var horaActual = document.getElementById('hora_actual');
+            horaActual.textContent = horas + ':' + minutos + ':' + segundos;
+        }
+
+        setInterval(actualizarHora, 1000);
+
+        {% if mensaje %}
+            alert("{{ mensaje }}");
+        {% endif %}
+    </script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+/* Colores principales */
+body {
+    font-family: 'Montserrat', sans-serif; /* Basado en una tipografía similar */
+    background-color: #f2efe8; /* Fondo claro */
+    color: #333; /* Texto oscuro */
+}
+
+/* Estilos de navegación */
+nav {
+    background-color: #cf3631; /* Rojo oscuro */
+    padding: 1em;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 0.5em 1em;
+    margin-right: 1em;
+}
+
+nav a:hover {
+    background-color: #f4b41a; /* Amarillo de acento */
+    color: #000;
+}
+
+/* Estilos para el contenido */
+.container {
+    padding: 2em;
+    background-color: #ffffff; /* Fondo blanco para contenedores */
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1, h2, h3 {
+    color: #cf3631; /* Color del encabezado */
+}
+
+button {
+    background-color: #cf3631;
+    color: #fff;
+    padding: 0.75em 1.5em;
+    border: none;
+    border-radius: 4px;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #f4b41a;
+    color: #000;
+}

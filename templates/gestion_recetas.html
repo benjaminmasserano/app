@@ -1,0 +1,121 @@
+{% block content %}
+<a href="{{ url_for('index') }}">
+    <button type="button" class="boton-volver">Volver a Inicio</button>
+</a>
+
+<h1>Gestión de Recetas</h1>
+
+<!-- Botón para agregar una nueva receta -->
+<a href="{{ url_for('agregar_receta') }}">
+    <button class="boton-agregar">Agregar Receta</button>
+</a>
+
+<h2>Buscar Receta</h2>
+<!-- Formulario de búsqueda -->
+<form action="{{ url_for('gestion_recetas') }}" method="POST">
+    <label for="receta">Selecciona una receta:</label>
+    <select name="receta" id="receta" required>
+        <option value="">Selecciona una receta</option>
+        {% for receta in recetas %}
+            <option value="{{ receta.id_receta }}">{{ receta.nombre }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit" class="boton-buscar">Buscar</button>
+</form>
+
+<!-- Mostrar la receta seleccionada con sus ingredientes y cantidades -->
+{% if receta_seleccionada %}
+<h2>Detalles de la Receta</h2>
+<table border="1" cellpadding="10" cellspacing="0" class="tabla-detalle">
+    <thead>
+        <tr>
+            <th>Nombre de la Receta</th>
+            <th>Instrucciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ receta_seleccionada.nombre }}</td>
+            <td>{{ receta_seleccionada.instrucciones }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<h3>Ingredientes</h3>
+<table border="1" cellpadding="10" cellspacing="0" class="tabla-ingredientes">
+    <thead>
+        <tr>
+            <th>Ingrediente</th>
+            <th>Cantidad</th>
+            <th>Unidad</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ingrediente in ingredientes %}
+        <tr>
+            <td>{{ ingrediente.nombre }}</td>
+            <td>{{ ingrediente.cantidad }}</td>
+            <td>{{ ingrediente.unidad }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Botón para editar la receta -->
+<a href="{{ url_for('editar_receta', id_receta=receta_seleccionada.id_receta) }}">
+    <button type="button" class="boton-editar">Editar Receta</button>
+</a>
+{% else %}
+<p>No se ha seleccionado ninguna receta. Por favor, selecciona una receta para ver sus detalles.</p>
+{% endif %}
+{% endblock %}
+
+<style>
+    /* Estilo general para los botones */
+    .boton-volver, .boton-agregar, .boton-buscar, .boton-editar {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin: 10px;
+    }
+
+    .boton-volver:hover, .boton-agregar:hover, .boton-buscar:hover, .boton-editar:hover {
+        background-color: #2980b9;
+    }
+
+    .boton-volver:active, .boton-agregar:active, .boton-buscar:active, .boton-editar:active {
+        transform: translateY(2px);
+    }
+
+    /* Estilo para las tablas */
+    .tabla-detalle, .tabla-ingredientes {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .tabla-detalle th, .tabla-ingredientes th, .tabla-detalle td, .tabla-ingredientes td {
+        text-align: center;
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+
+    .tabla-detalle th, .tabla-ingredientes th {
+        background-color: #f2f2f2;
+    }
+
+    .tabla-ingredientes td {
+        text-align: left;
+    }
+
+    /* Estilo para el mensaje cuando no hay receta seleccionada */
+    p {
+        color: #e74c3c;
+        font-weight: bold;
+    }
+</style>

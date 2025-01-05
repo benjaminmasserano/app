@@ -1,0 +1,32 @@
+{% block content %}
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 20px;">
+    <h1 style="font-weight: bold; text-align: center;">{{ 'Editar' if mercaderia else 'Agregar Nueva' }} Mercadería</h1>
+    <form method="POST" style="max-width: 500px; padding: 20px; background-color: #f9f9f9; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+        <label for="nombre" style="font-weight: bold;">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" value="{{ mercaderia.nombre if mercaderia else '' }}" required style="width: 100%; padding: 10px; margin: 10px 0; border-radius: 4px; border: 1px solid #ccc;"><br>
+
+        <label for="detalle" style="font-weight: bold;">Detalle:</label>
+        <input type="text" id="detalle" name="detalle" value="{{ mercaderia.detalle if mercaderia else '' }}" required style="width: 100%; padding: 10px; margin: 10px 0; border-radius: 4px; border: 1px solid #ccc;"><br>
+
+        <label for="unidad" style="font-weight: bold;">Unidad:</label>
+        <input type="text" id="unidad" name="unidad" value="{{ mercaderia.unidad if mercaderia else '' }}" required style="width: 100%; padding: 10px; margin: 10px 0; border-radius: 4px; border: 1px solid #ccc;"><br>
+
+        <label for="proveedores" style="font-weight: bold;">Proveedores:</label>
+        <div id="proveedores" style="margin: 10px 0; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+            {% for proveedor in proveedores %}
+            <div style="margin-bottom: 5px;">
+                <label>
+                    <input type="checkbox" name="id_proveedores[]" value="{{ proveedor.id_proveedor }}"
+                        {% if proveedor.id_proveedor in proveedores_asociados %} checked {% endif %}>
+                    {{ proveedor.nombre }}
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+
+        <button type="submit" style="background-color: #3498db; color: white; padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; width: 100%; font-size: 16px;">
+            {{ 'Actualizar' if mercaderia else 'Añadir' }}
+        </button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Almacén</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin: 0 auto;
+        }
+
+        label {
+            font-size: 16px;
+            margin-bottom: 8px;
+            display: block;
+            color: #333;
+        }
+
+        select, input[type="password"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            background-color: #3498db;
+            color: white;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+
+        input[type="submit"]:active {
+            transform: translateY(2px);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Agregar Mercadería al Almacén</h1>
+    
+    <!-- Formulario -->
+    <form method="POST">
+        <label for="persona">Persona:</label>
+        <select name="persona" required>
+            <option value="">Seleccione una persona</option>
+            {% for persona in personas %}
+            <option value="{{ persona['id_persona'] }}">{{ persona['nombre'] }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="clave_fichaje">Clave de fichaje:</label>
+        <input type="password" name="clave_fichaje" required>
+
+        <label for="mercaderia">Mercadería:</label>
+        <select name="id_mercaderia" required>
+            <option value="">Seleccione una mercadería</option>
+            {% for mercaderia in mercaderias %}
+            <option value="{{ mercaderia['id_mercaderia'] }}">{{ mercaderia['nombre'] }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" name="cantidad" min="1" required>
+
+        <input type="submit" value="Agregar al almacén">
+    </form>
+
+</body>
+</html>

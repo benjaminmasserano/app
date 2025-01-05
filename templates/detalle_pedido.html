@@ -1,0 +1,152 @@
+{% block content %}
+<div class="container">
+    <div class="back-button">
+        <a href="{{ url_for('historial_pedidos') }}">
+            <button class="btn" type="button">Volver al Historial de Pedidos</button>
+        </a>
+    </div>
+
+    <h1>Detalles del Pedido</h1>
+
+    <!-- Tabla de detalles del pedido -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Mercadería</th>
+                <th>Cantidad</th>
+                <th>Unidad</th>
+                <th>Proveedor</th>
+                <th>Estado</th>
+                <th>Fecha de Pedido</th>
+                <th>Fecha de Entrega</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for detalle in detalles %}
+            <tr>
+                <td>{{ detalle.mercaderia }}</td>
+                <td>{{ detalle.cantidad }}</td>
+                <td>{{ detalle.unidad }}</td>
+                <td>{{ detalle.proveedor }}</td>
+                <td>
+                    {% if detalle.estado == 'Pendiente' %}
+                        Pendiente de entrega
+                        <form method="POST" action="{{ url_for('detalle_pedido', id_pedido=id_pedido) }}" style="display:inline;">
+                            <input type="hidden" name="id_detalle" value="{{ detalle.id_detalle }}">
+                            <button type="submit" class="btn btn-success">Entrega recibida</button>
+                        </form>
+                    {% else %}
+                        {{ detalle.estado }}
+                    {% endif %}
+                </td>
+                <td>{{ detalle.fecha_pedido }}</td>
+                <td>{{ detalle.fecha_entrega or 'No entregado' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Mensajes para los Proveedores</h2>
+    {% for proveedor, mensaje in mensajes.items() %}
+    <div class="message">
+        <h3>Mensaje para {{ proveedor }}:</h3>
+        <pre>{{ mensaje }}</pre>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Estilos CSS -->
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f7fa;
+        margin: 0;
+        padding: 0;
+        color: #333;
+    }
+
+    .container {
+        width: 80%;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    h1, h2, h3 {
+        color: #2c3e50;
+        text-align: center;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        text-decoration: none;
+    }
+
+    .btn:hover {
+        background-color: #2980b9;
+        transform: translateY(-3px);
+    }
+
+    .btn:active {
+        transform: translateY(0);
+    }
+
+    .btn-success {
+        background-color: #27ae60;
+    }
+
+    .btn-success:hover {
+        background-color: #2ecc71;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: center;
+        border: 1px solid #ccc;
+    }
+
+    th {
+        background-color: #f1f1f1;
+        color: #333;
+    }
+
+    td {
+        background-color: #fff;
+        color: #333;
+    }
+
+    .message {
+        background-color: #ecf0f1;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .back-button {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .message pre {
+        font-size: 14px;
+        color: #7f8c8d;
+    }
+</style>
+
+{% endblock %}

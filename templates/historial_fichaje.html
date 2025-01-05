@@ -1,0 +1,96 @@
+{% block content %}
+<a href="{{ url_for('gestion_fichaje') }}">
+    <button type="button">Volver a Gestión de Fichajes</button>
+</a>
+
+<h2>Historial de Fichajes</h2>
+
+<!-- Formulario para filtrar por persona y día -->
+<h3>Filtrar Fichajes</h3>
+<form action="{{ url_for('historial_fichajes') }}" method="POST">
+    <label for="persona">Selecciona una Persona:</label>
+    <select name="persona" id="persona">
+        <option value="">Selecciona una persona</option>
+        {% for persona in personas %}
+            <option value="{{ persona.id_persona }}" {% if request.form['persona'] == persona.id_persona %}selected{% endif %}>{{ persona.nombre }} {{ persona.apellido }}</option>
+        {% endfor %}
+    </select>
+    <br><br>
+
+    <label for="fecha">Selecciona la fecha:</label>
+    <input type="date" id="fecha" name="fecha" value="{{ request.form['fecha'] if request.form.get('fecha') else '' }}">
+    <br><br>
+
+    <button type="submit">Filtrar</button>
+    <!-- Botón para borrar filtros -->
+    <button type="button" onclick="window.location.href='{{ url_for('historial_fichajes') }}'">Borrar Filtros</button>
+</form>
+
+<!-- Mostrar el historial de fichajes -->
+<h3>Historial de Fichajes</h3>
+<table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+    <thead>
+        <tr>
+            <th>ID Persona</th>
+            <th>Nombre</th>
+            <th>Acción</th>
+            <th>Hora</th>
+            <th>Fecha</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for fichaje in historial %}
+            <tr>
+                <td>{{ fichaje.id_persona }}</td>
+                <td>{{ fichaje.nombre }}</td>
+                <td>{{ fichaje.accion }}</td>
+                <td>{{ fichaje.hora }}</td>
+                <td>{{ fichaje.hora.strftime('%Y-%m-%d') }}</td>  <!-- Mostrar solo la fecha -->
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+<style>
+    /* Estilo para los botones */
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin: 5px;
+    }
+
+    button:hover {
+        background-color: #2980b9;
+    }
+
+    button:active {
+        transform: translateY(2px);
+    }
+
+    /* Estilo para la tabla */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    td {
+        background-color: #fff;
+    }
+</style>

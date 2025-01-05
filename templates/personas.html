@@ -1,0 +1,105 @@
+{% block content %}
+<!-- Botón para volver al inicio -->
+<a href="{{ url_for('index') }}">
+    <button type="button">Volver a Inicio</button>
+</a>
+
+<h1>Personas</h1>
+
+<!-- Botón para añadir nueva persona -->
+<a href="{{ url_for('add_persona') }}">
+    <button type="button">Añadir Nueva Persona</button>
+</a>
+
+<p></p>
+
+<!-- Tabla de personas -->
+<table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+    <thead>
+        <tr>
+            <th style="padding: 10px; text-align: left; background-color: #f2f2f2;">ID Persona</th>
+            <th style="padding: 10px; text-align: left; background-color: #f2f2f2;">Nombre</th>
+            <th style="padding: 10px; text-align: left; background-color: #f2f2f2;">Apellido</th>
+            <th style="padding: 10px; text-align: left; background-color: #f2f2f2;">Email</th>
+            <th style="padding: 10px; text-align: left; background-color: #f2f2f2;">Teléfono</th>
+            <th style="padding: 10px; text-align: left; background-color: #f2f2f2;">DNI</th>
+            <th style="padding: 10px; text-align: left; background-color: #f2f2f2;">Clave Fichaje</th>
+            <th style="padding: 10px; text-align: left; background-color: #f2f2f2;">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for persona in personas %}
+        <tr>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ persona.id_persona }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ persona.nombre }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ persona.apellido }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ persona.mail }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ persona.telefono }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ persona.dni }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">{{ persona.clave_fichaje }}</td>
+            <td style="padding: 10px; border: 1px solid #ddd;">
+                <a href="{{ url_for('edit_persona', id=persona.id_persona) }}" style="text-decoration: none; color: blue;">Editar</a> | 
+                <a href="{{ url_for('delete_persona', id=persona.id_persona) }}" style="text-decoration: none; color: red;">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+<style>
+    /* Estilo para los botones */
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin: 5px;
+    }
+
+    button:hover {
+        background-color: #2980b9;
+    }
+
+    button:active {
+        transform: translateY(2px);
+    }
+
+    /* Estilo para los enlaces de la tabla */
+    a {
+        font-size: 14px;
+    }
+
+    /* Estilo para la tabla */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    td {
+        background-color: #fff;
+    }
+
+    td a {
+        color: blue;
+        text-decoration: none;
+    }
+
+    td a:hover {
+        text-decoration: underline;
+    }
+</style>

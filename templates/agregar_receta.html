@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Receta - Bastarda Gestión</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fa;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        h1, h3 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        .container {
+            width: 70%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            display: inline-block;
+            text-decoration: none;
+            margin: 10px;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-3px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        input[type="text"], input[type="number"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .ingrediente {
+            margin-bottom: 20px;
+        }
+
+        #agregar_ingrediente {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        #agregar_ingrediente:hover {
+            background-color: #2ecc71;
+            transform: translateY(-3px);
+        }
+
+        #agregar_ingrediente:active {
+            transform: translateY(0);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-button {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .back-button a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Botón para volver a la gestión de recetas -->
+        <div class="back-button">
+            <a href="{{ url_for('gestion_recetas') }}">
+                <button class="btn" type="button">Volver a Gestión de Recetas</button>
+            </a>
+        </div>
+
+        <h1>Agregar Nueva Receta</h1>
+
+        <!-- Formulario para agregar receta -->
+        <form action="{{ url_for('agregar_receta') }}" method="POST">
+            <!-- Nombre de la receta -->
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+
+            <!-- Instrucciones de la receta -->
+            <label for="instrucciones">Instrucciones:</label>
+            <textarea id="instrucciones" name="instrucciones" required></textarea>
+
+            <!-- Ingredientes -->
+            <div id="ingredientes">
+                <h3>Ingredientes</h3>
+                <div class="ingrediente">
+                    <label for="ingrediente_1">Ingrediente 1:</label>
+                    <input type="text" name="ingrediente[]" required>
+
+                    <label for="cantidad_1">Cantidad:</label>
+                    <input type="number" name="cantidad[]" step="any" required>
+
+                    <label for="unidad_1">Unidad:</label>
+                    <input type="text" name="unidad[]" required>
+                </div>
+            </div>
+
+            <!-- Botón para agregar más ingredientes -->
+            <button type="button" id="agregar_ingrediente">Agregar otro ingrediente</button>
+
+            <!-- Botón para guardar la receta -->
+            <div class="form-footer">
+                <button type="submit" class="btn">Guardar Receta</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let contador = 2; // Para numerar los ingredientes
+        document.getElementById('agregar_ingrediente').addEventListener('click', function() {
+            let nuevoIngrediente = document.createElement('div');
+            nuevoIngrediente.classList.add('ingrediente');
+            nuevoIngrediente.innerHTML = `
+                <label for="ingrediente_${contador}">Ingrediente ${contador}:</label>
+                <input type="text" name="ingrediente[]" required>
+
+                <label for="cantidad_${contador}">Cantidad:</label>
+                <input type="number" name="cantidad[]" step="any" required>
+
+                <label for="unidad_${contador}">Unidad:</label>
+                <input type="text" name="unidad[]" required>
+            `;
+            document.getElementById('ingredientes').appendChild(nuevoIngrediente);
+            contador++;
+        });
+    </script>
+
+</body>
+</html>
